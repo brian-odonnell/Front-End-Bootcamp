@@ -1,0 +1,19 @@
+{
+  "name": "front-end-boot-camp",
+  "version": "0.1.0",
+  "authors": [
+    "Dave Rodriguez <dave.rodriguez@hansoninc.com>"
+  ],
+  "description": "Hanson Front-End Boot Camp",
+  "main": "build/index.html",
+  "license": "MIT",
+  "homepage": "http://intranet.hansoninc.local/display/design/Boot+Camp+Pre-Assignment",
+  "private": true,
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests"
+  ]
+}
