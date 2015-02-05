@@ -16,73 +16,75 @@ module.exports = function (grunt) {
 					'js/lib/hbs.js',
 					'js/lib/underscore.js'
 				],
-				dest: 'js/libs.js'
+				dest: 'js/lib/libs.js'
 			}
 		},
 		connect: {
 			server: {
 				options: {
 					port: 3000,
-					hostname: '*',
 					keepalive: true,
-					livereload: true
+					livereload: true,
+					base: 'build/',
+					hostname: '*'
 				}
 			}
 		},
-		uglify: {
-			dist: {
-				src: '<%= concat.dist.dest %>',
-				dest: 'js/libs.min.js'
-			}
-		},
-		jshint: {
-			options: {
-				node: true,
-				curly: true,
-				eqeqeq: true,
-				immed: true,
-				latedef: true,
-				newcap: true,
-				noarg: true,
-				sub: true,
-				undef: true,
-				unused: true,
-				eqnull: true,
-				browser: true,
-				globals: { jQuery: true },
-				boss: true
+		copy: {
+			html: {
+				files: [{
+					expand: true,
+					cwd: 'src/',
+					src: ['*.html'],
+					dest: 'build/'
+				}]
 			},
-			gruntfile: {
-				src: 'gruntfile.js'
+			img: {
+				files: [{
+					expand: true,
+					cwd: 'src/img/',
+					src: ['**'],
+					dest: 'build/img/'
+				}]
 			},
-			lib_test: {
-				src: ['lib/**/*.js', 'test/**/*.js']
+			js: {
+				files: [{
+					expand: true,
+					cwd: 'src/js/',
+					src: ['**'],
+					dest: 'build/js/'
+				}]
 			}
-		},
-		qunit: {
-			files: ['test/**/*.html']
 		},
 		watch: {
-			gruntfile: {
-				files: '<%= jshint.gruntfile.src %>',
-				tasks: ['jshint:gruntfile']
-			},
-			lib_test: {
-				files: '<%= jshint.lib_test.src %>',
-				tasks: ['jshint:lib_test', 'qunit']
-			},
 			less: {
-				files: 'css/less/*.less',
+				files: ['src/**/*.less'],
 				tasks: ['less'],
-				options: {
-					livereload: true
-				}
+				options: { livereload: true }
+			},
+			html: {
+				files: ['src/**/*.html'],
+				tasks: ['copy:html'],
+				options: { livereload: true }
+			},
+			js: {
+				files: ['src/**/*.js'],
+				tasks: [
+					'concat', 'copy:js'
+				],
+				options: { livereload: true }
+			},
+			img: {
+				files: ['src/**/*.{jpg|png}'],
+				tasks: [
+					'copy:img'
+				]
 			}
 		},
 		less: {
 			development: {
 				files: {
-					"css/main.css": "css/less/main.less"
+					"build/css/main.css": "src/less/main.less"
 				},
 				options: {
 					compress: true
@@ -93,15 +95,12 @@ module.exports = function (grunt) {
 
 	// These plugins provide necessary tasks
 	grunt.loadNpmTasks('grunt-contrib-concat');
-	grunt.loadNpmTasks('grunt-contrib-uglify');
-	grunt.loadNpmTasks('grunt-contrib-qunit');
-	grunt.loadNpmTasks('grunt-contrib-jshint');
-	grunt.loadNpmTasks('grunt-contrib-watch');
 	grunt.loadNpmTasks('grunt-contrib-connect');
+	grunt.loadNpmTasks('grunt-contrib-copy');
 	grunt.loadNpmTasks('grunt-contrib-less');
+	grunt.loadNpmTasks('grunt-contrib-watch');
 
 	// Default task
-	grunt.registerTask('default', ['jshint', 'qunit', 'concat', 'uglify']);
-	grunt.registerTask('jsmin', ['concat', 'uglify']);
+	grunt.registerTask('default', ['less', 'concat', 'copy']);
 };
 

@@ -19,7 +19,6 @@
 	 */
 	$(document).ready(function() {
 		module.init();
-		HBS.initPage();
 	});
 	HBS.namespace('HAN.main', module);
 }());
