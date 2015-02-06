@@ -13,8 +13,8 @@ module.exports = function (grunt) {
 		concat: {
 			dist: {
 				src: [
-					'build/js/lib/hbs.js',
-					'build/js/lib/underscore.js'
+					'src/js/lib/hbs.js',
+					'src/js/lib/underscore.js'
 				],
 				dest: 'build/js/lib/libs.js'
 			}
